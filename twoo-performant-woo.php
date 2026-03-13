@@ -105,3 +105,12 @@ function twoo_activate_plugin()
 }
 
 register_activation_hook(__FILE__, 'twoo_activate_plugin');
+
+//hpos declaration
+
+// HPOS - not needed, but apparently it fails checks!
+add_action( 'before_woocommerce_init', function () {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
