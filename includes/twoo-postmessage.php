@@ -1,32 +1,45 @@
 <?php
 
-function twoo_enqueue_hide_elements_script() {
-	wp_enqueue_script( 'twoo_postmessage', 'https://event.2performant.com/javascripts/postmessage.js', array( 'jquery' ), null, true );
-
-
-	$css_classes_to_hide = get_option( 'twoo_css_classes_to_hide', '' );
-	$css_classes_to_hide = str_replace( ' ', '', $css_classes_to_hide );
-
-
-	$inline_script = "
-	                 <script type='text/javascript'>
-	                              jQuery(document).ready(function($) {
-		                              window.dp_network_url = 'event.2performant.com';
-		                              window.dp_campaign_unique = '" . esc_js(get_option('twoo_campaign_unique', '')) . "';
-        window.dp_cookie_result = function(data){
-	        if(data && data.indexOf(':click:') !== -1) {
-		        $('" . esc_js($css_classes_to_hide) . "').hide();
-	        } else {
-		        $('" . esc_js($css_classes_to_hide) . "').show();
-	        }
-        };
-        xtd_receive_cookie(); 
-    });
-    </script>";
-
-
-
-	echo $inline_script;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-add_action( 'wp_footer', 'twoo_enqueue_hide_elements_script' );
+function twoo_enqueue_hide_elements_script() {
+	$campaign_unique     = trim( (string) get_option( 'twoo_campaign_unique', '' ) );
+	$css_classes_to_hide = trim( (string) get_option( 'twoo_css_classes_to_hide', '' ) );
+
+	if ( '' === $campaign_unique || '' === $css_classes_to_hide ) {
+		return;
+	}
+
+	wp_enqueue_script( 'twoo-postmessage', 'https://event.2performant.com/javascripts/postmessage.js', array( 'jquery' ), null, true );
+
+	$selectors = array_filter( array_map( 'trim', explode( ',', $css_classes_to_hide ) ) );
+	if ( empty( $selectors ) ) {
+		return;
+	}
+
+	$inline_js = "
+window.dp_network_url = 'event.2performant.com';
+window.dp_campaign_unique = " . wp_json_encode( $campaign_unique ) . ";
+window.dp_cookie_result = function(data) {
+    var selectors = " . wp_json_encode( implode( ',', $selectors ) ) . ";
+    if (!selectors) {
+        return;
+    }
+
+    if (data && data.indexOf(':click:') !== -1) {
+        jQuery(selectors).hide();
+    } else {
+        jQuery(selectors).show();
+    }
+};
+if (typeof xtd_receive_cookie === 'function') {
+    xtd_receive_cookie();
+}
+";
+
+	wp_add_inline_script( 'twoo-postmessage', $inline_js, 'after' );
+}
+
+add_action( 'wp_enqueue_scripts', 'twoo_enqueue_hide_elements_script' );
