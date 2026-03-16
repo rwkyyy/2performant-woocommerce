@@ -4,6 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Debugger
+if ( ! defined( 'TWOO_BIG_BEAR_DEBUG' ) ) {
+	define( 'TWOO_BIG_BEAR_DEBUG', false );
+}
+
 function twoo_get_net_item_unit_value( WC_Order_Item_Product $item, WC_Order $order ) {
 
 	$quantity = max( 1, (int) $item->get_quantity() );
@@ -160,31 +165,35 @@ function twoo_render_tp_order_script( $order_id ) {
 		'items'         => $items,
 	);
 
-	// Debugging: expose the payload and calculation details in the browser console
-	$debug_items = array();
-	foreach ( $order->get_items( 'line_item' ) as $debug_item ) {
-		if ( ! $debug_item instanceof WC_Order_Item_Product ) {
-			continue;
+	if ( TWOO_BIG_BEAR_DEBUG ) {
+		$debug_items = array();
+		foreach ( $order->get_items( 'line_item' ) as $debug_item ) {
+			if ( ! $debug_item instanceof WC_Order_Item_Product ) {
+				continue;
+			}
+
+			$debug_items[] = array(
+				'name'           => $debug_item->get_name(),
+				'quantity'       => $debug_item->get_quantity(),
+				'subtotal'       => $debug_item->get_subtotal(),
+				'subtotal_tax'   => $debug_item->get_subtotal_tax(),
+				'total'          => $debug_item->get_total(),
+				'total_tax'      => $debug_item->get_total_tax(),
+				'computed_value' => twoo_get_net_item_unit_value( $debug_item, $order ),
+			);
 		}
 
-		$debug_items[] = array(
-			'name'           => $debug_item->get_name(),
-			'quantity'       => $debug_item->get_quantity(),
-			'subtotal'       => $debug_item->get_subtotal(),
-			'subtotal_tax'   => $debug_item->get_subtotal_tax(),
-			'total'          => $debug_item->get_total(),
-			'total_tax'      => $debug_item->get_total_tax(),
-			'computed_value' => twoo_get_net_item_unit_value( $debug_item, $order ),
+		$debug_payload = array(
+			'order_id' => $order->get_id(),
+			'items'    => $debug_items,
+			'tpOrder'  => $tp_order,
 		);
+
+		echo "<script>window.tpOrder = " . wp_json_encode( $tp_order, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . "; console.log('2Performant BigBear payload', " . wp_json_encode( $debug_payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . ");</script>\n";
+	} else {
+		echo "<script>window.tpOrder = " . wp_json_encode( $tp_order, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . ";</script>\n";
 	}
 
-	$debug_payload = array(
-		'order_id' => $order->get_id(),
-		'items'    => $debug_items,
-		'tpOrder'  => $tp_order,
-	);
-
-	echo "<script>window.tpOrder = " . wp_json_encode( $tp_order, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . "; console.log('2Performant BigBear payload', " . wp_json_encode( $debug_payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . ");</script>\n";
 	echo "<script defer src='https://attr-2p.com/" . esc_attr( $big_bear_id ) . "/sls/1.js'></script>\n";
 }
 
