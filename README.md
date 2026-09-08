@@ -9,7 +9,7 @@ It supports both tracking methods 2Performant offers — the legacy sale-check i
 
 ## Requirements
 
-- WordPress with WooCommerce 4.2 or newer (tested up to WooCommerce 10.6)
+- WordPress with WooCommerce 4.2 or newer (tested up to WooCommerce 11.1)
 - A 2Performant / Business League advertiser account
 - Your campaign credentials from the [iframe tracking](https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode)
   and [Big Bear attribution](https://businessleague.2performant.com/advertiser/attribution/big_bear_attribution#section_0) pages

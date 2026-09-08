@@ -17,13 +17,20 @@
  * License:       GPLv3 or later
  * License URI:   https://www.gnu.org/licenses/gpl-3.0.html
  * WC requires at least: 4.2
- * WC tested up to: 10.6
+ * WC tested up to: 11.1
  */
 
 if (!defined('ABSPATH')) {
 	exit;
 }
 
+
+add_action(
+	'init',
+	function () {
+		load_plugin_textdomain('twoo-performant-uprise', false, dirname(plugin_basename(__FILE__)) . '/languages');
+	}
+);
 
 include_once 'includes/twoo-vat.php';
 include_once 'includes/twoo-iframe.php';
@@ -56,25 +63,29 @@ function get_twoo_performant_uprise_settings()
 		'section_title' => array(
 			'name' => __('2Performant Settings', 'twoo-performant-uprise'),
 			'type' => 'title',
-			'desc' => 'Here you can set all your essential settings and get your feed url! The feed url is <a href="' . esc_url($feed_url) . '" target="_blank">' . esc_html($feed_url) . '</a>.',
+			'desc' => sprintf(
+				/* translators: %s: link to the product feed URL */
+				__('Here you can set all your essential settings and get your feed url! The feed url is %s.', 'twoo-performant-uprise'),
+				'<a href="' . esc_url($feed_url) . '" target="_blank">' . esc_html($feed_url) . '</a>'
+			),
 			'id' => 'twoo_section_title',
 		),
 		'campaign_unique' => array(
 			'name' => __('Campaign Unique', 'twoo-performant-uprise'),
 			'type' => 'text',
-			'desc' => 'You can find the values <a href="https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode" target="_blank">here</a>; input only the value after campaign_unique=',
+			'desc' => __('You can find the values <a href="https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode" target="_blank">here</a>; input only the value after campaign_unique=', 'twoo-performant-uprise'),
 			'id' => 'twoo_campaign_unique',
 		),
 		'confirm' => array(
 			'name' => __('Confirm', 'twoo-performant-uprise'),
 			'type' => 'text',
-			'desc' => 'You can find the values <a href="https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode" target="_blank">here</a>; input only the value after confirm=',
+			'desc' => __('You can find the values <a href="https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode" target="_blank">here</a>; input only the value after confirm=', 'twoo-performant-uprise'),
 			'id' => 'twoo_confirm',
 		),
 		'big_bear' => array(
 			'name' => __('Big Bear Attribution', 'twoo-performant-uprise'),
 			'type' => 'text',
-			'desc' => 'You can find the value <a href="https://businessleague.2performant.com/advertiser/attribution/big_bear_attribution#section_0" target="_blank">here</a>; usually it is the segment after attr-2p.com/THIS_ID/clc/1.js',
+			'desc' => __('You can find the value <a href="https://businessleague.2performant.com/advertiser/attribution/big_bear_attribution#section_0" target="_blank">here</a>; usually it is the segment after attr-2p.com/THIS_ID/clc/1.js', 'twoo-performant-uprise'),
 			'id' => 'twoo_big_bear',
 		),
 		'css_classes_to_hide' => array(

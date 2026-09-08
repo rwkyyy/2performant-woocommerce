@@ -1,0 +1,123 @@
+# Romanian translation for 2Performant / Business League for WooCommerce.
+# Copyright (C) 2026 Eduard V. Doloc
+# This file is distributed under the GPLv3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: 2Performant / Business League for WooCommerce 2026.9.8\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/2performant-woocommerce\n"
+"Last-Translator: Eduard V. Doloc <eduard@uprise.ro>\n"
+"Language-Team: Romanian\n"
+"Language: ro_RO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-09-08 14:10+0000\n"
+"X-Domain: twoo-performant-uprise\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100>0 && n%100<20)) ? 1 : 2);\n"
+
+#. Description of the plugin
+#: twoo-performant-woo.php
+msgid "Full integration with 2Performant /Business League for WooCommerce, supports 3rd party tracking (iframe), 1st party tracking (big bear), basic feed generation and hiding elements for network generated traffic!"
+msgstr "Integrare completă cu 2Performant / Business League pentru WooCommerce: tracking prin terți (iframe), tracking first-party (big bear), generare de feed de produse și ascunderea unor elemente pentru traficul generat din rețeaua de afiliere!"
+
+#: twoo-performant-woo.php:44
+msgid "2Performant"
+msgstr "2Performant"
+
+#: twoo-performant-woo.php:64
+msgid "2Performant Settings"
+msgstr "Setări 2Performant"
+
+#. translators: %s: link to the product feed URL
+#: twoo-performant-woo.php:68
+#, php-format
+msgid "Here you can set all your essential settings and get your feed url! The feed url is %s."
+msgstr "Aici poți configura toate setările esențiale și obține URL-ul feed-ului! URL-ul feed-ului este %s."
+
+#: twoo-performant-woo.php:74
+msgid "Campaign Unique"
+msgstr "Cod unic campanie"
+
+#: twoo-performant-woo.php:76
+msgid "You can find the values <a href=\"https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode\" target=\"_blank\">here</a>; input only the value after campaign_unique="
+msgstr "Găsești valorile <a href=\"https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode\" target=\"_blank\">aici</a>; introdu doar valoarea de după campaign_unique="
+
+#: twoo-performant-woo.php:80
+msgid "Confirm"
+msgstr "Cod de confirmare"
+
+#: twoo-performant-woo.php:82
+msgid "You can find the values <a href=\"https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode\" target=\"_blank\">here</a>; input only the value after confirm="
+msgstr "Găsești valorile <a href=\"https://businessleague.2performant.com/advertiser/attribution/iframe_tracking#installCode\" target=\"_blank\">aici</a>; introdu doar valoarea de după confirm="
+
+#: twoo-performant-woo.php:86
+msgid "Big Bear Attribution"
+msgstr "Atribuire Big Bear"
+
+#: twoo-performant-woo.php:88
+msgid "You can find the value <a href=\"https://businessleague.2performant.com/advertiser/attribution/big_bear_attribution#section_0\" target=\"_blank\">here</a>; usually it is the segment after attr-2p.com/THIS_ID/clc/1.js"
+msgstr "Găsești valoarea <a href=\"https://businessleague.2performant.com/advertiser/attribution/big_bear_attribution#section_0\" target=\"_blank\">aici</a>; de obicei este segmentul de după attr-2p.com/THIS_ID/clc/1.js"
+
+#: twoo-performant-woo.php:92
+msgid "CSS Classes to Hide (optional)"
+msgstr "Clase CSS de ascuns (opțional)"
+
+#: twoo-performant-woo.php:94
+msgid "Enter CSS selectors separated by commas, for example: .class-1,.class-2"
+msgstr "Introdu selectori CSS separați prin virgulă, de exemplu: .class-1,.class-2"
+
+#: twoo-performant-woo.php:103
+msgid "Feed Product Filtering"
+msgstr "Filtrare produse în feed"
+
+#: twoo-performant-woo.php:105
+msgid "Restrict which products appear in the feed. Leave this disabled (or every list empty) to include all published products. When enabled, a product is included if it matches ANY selected category, brand, or tag."
+msgstr "Limitează produsele care apar în feed. Lasă opțiunea dezactivată (sau toate listele goale) pentru a include toate produsele publicate. Când este activată, un produs este inclus dacă se potrivește cu ORICARE categorie, brand sau etichetă selectată."
+
+#: twoo-performant-woo.php:109
+msgid "Enable feed filtering"
+msgstr "Activează filtrarea feed-ului"
+
+#: twoo-performant-woo.php:111
+msgid "When unchecked, the feed includes every published product (default behaviour)."
+msgstr "Când este debifată, feed-ul include toate produsele publicate (comportamentul implicit)."
+
+#: twoo-performant-woo.php:116
+msgid "Include categories"
+msgstr "Include categoriile"
+
+#: twoo-performant-woo.php:121
+msgid "Products in any selected category (and its sub-categories) are included."
+msgstr "Sunt incluse produsele din oricare categorie selectată (și subcategoriile ei)."
+
+#: twoo-performant-woo.php:126
+msgid "Include brands"
+msgstr "Include brandurile"
+
+#: twoo-performant-woo.php:131
+msgid "Products assigned to any selected brand are included."
+msgstr "Sunt incluse produsele asociate oricărui brand selectat."
+
+#: twoo-performant-woo.php:136
+msgid "Include tags"
+msgstr "Include etichetele"
+
+#: twoo-performant-woo.php:141
+msgid "Products with any selected tag are included."
+msgstr "Sunt incluse produsele cu oricare etichetă selectată."
+
+#: twoo-performant-woo.php:151
+msgid "VAT Override"
+msgstr "Suprascriere TVA"
+
+#: twoo-performant-woo.php:153
+msgid "Only used when WooCommerce taxes are disabled. If your store runs without WooCommerce tax settings, prices still include VAT that WooCommerce cannot strip. Set your VAT rate here and it will be removed from the net sale values reported to 2Performant (iframe + Big Bear). Leave at 0 to disable. Automatically ignored whenever WooCommerce taxes are enabled."
+msgstr "Folosită doar când taxele WooCommerce sunt dezactivate. Dacă magazinul funcționează fără setări de taxe în WooCommerce, prețurile includ totuși TVA-ul pe care WooCommerce nu îl poate scădea. Setează aici cota de TVA și va fi scăzută din valorile nete raportate către 2Performant (iframe + Big Bear). Lasă 0 pentru a dezactiva. Este ignorată automat când taxele WooCommerce sunt activate."
+
+#: twoo-performant-woo.php:157
+msgid "VAT rate (%)"
+msgstr "Cota de TVA (%)"
+
+#: twoo-performant-woo.php:159
+msgid "For example 19 for 19%. Set to 0 to disable."
+msgstr "De exemplu 19 pentru 19%. Setează 0 pentru a dezactiva."
