@@ -1,0 +1,83 @@
+name: Release on version change
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'twoo-performant-woo.php'
+      - 'readme.txt'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Release the current version even if it did not change'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Read plugin version
+        id: ver
+        run: |
+          set -euo pipefail
+          read_version () {
+            awk 'match($0, /Version:[[:space:]]*[0-9A-Za-z.-]+/) {
+              s = substr($0, RSTART, RLENGTH); sub(/Version:[[:space:]]*/, "", s); print s; exit
+            }' "$1" | tr -d '\r'
+          }
+          CUR=$(read_version twoo-performant-woo.php)
+          if [ -z "$CUR" ]; then
+            echo "Could not read Version from twoo-performant-woo.php" >&2
+            exit 1
+          fi
+          if git cat-file -e "HEAD^:twoo-performant-woo.php" 2>/dev/null; then
+            git show "HEAD^:twoo-performant-woo.php" > /tmp/prev-plugin.php
+            PREV=$(read_version /tmp/prev-plugin.php || true)
+          else
+            PREV=""
+          fi
+          echo "current=$CUR" >> "$GITHUB_OUTPUT"
+          echo "previous=$PREV" >> "$GITHUB_OUTPUT"
+          echo "Current: '$CUR'  Previous: '$PREV'"
+
+      - name: Resolve tag
+        id: tag
+        run: |
+          set -euo pipefail
+          TAG="v${{ steps.ver.outputs.current }}"
+          echo "name=$TAG" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build plugin zip
+        if: (steps.ver.outputs.current != steps.ver.outputs.previous || github.event.inputs.force == 'true') && steps.tag.outputs.exists == 'false'
+        run: |
+          set -euo pipefail
+          git archive --format=zip --prefix=2performant-woocommerce/ \
+            -o 2performant-woocommerce.zip HEAD
+          unzip -l 2performant-woocommerce.zip
+
+      - name: Create release
+        if: (steps.ver.outputs.current != steps.ver.outputs.previous || github.event.inputs.force == 'true') && steps.tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          name: Release ${{ steps.ver.outputs.current }}
+          body: |
+            Automated release for version ${{ steps.ver.outputs.current }}.
+
+            Install/update ZIP: `2performant-woocommerce.zip` (attached below).
+          files: 2performant-woocommerce.zip
+          make_latest: true

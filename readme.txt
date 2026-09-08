@@ -3,7 +3,7 @@ Contributors: giucu91, rwky
 Tags: 2Performant, affiliate, woocommerce, 2performant
 Requires at least: 3.5
 Tested up to: 5.7
-Stable tag: 1.0.0
+Stable tag: 2026.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

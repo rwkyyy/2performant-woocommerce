@@ -24,6 +24,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+define('TWOO_PLUGIN_FILE', __FILE__);
 
 add_action(
 	'init',

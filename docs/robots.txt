@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rwkyyy.github.io/2performant-woocommerce/sitemap.xml

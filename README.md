@@ -79,6 +79,24 @@ add_filter( 'twoo_settings', function ( $settings ) {
 } );
 ```
 
+## Translations
+
+The admin interface is fully translatable (text domain `twoo-performant-uprise`). A **Romanian** (`ro_RO`)
+translation ships in `languages/`, along with the `.pot` template.
+
+To add or update a language:
+
+```bash
+# regenerate the template after changing any UI string
+wp i18n make-pot . languages/twoo-performant-uprise.pot --domain=twoo-performant-uprise --exclude=languages
+
+# start a new locale from the template, then translate and compile
+msginit --input=languages/twoo-performant-uprise.pot --locale=xx_XX --output=languages/twoo-performant-uprise-xx_XX.po
+msgfmt languages/twoo-performant-uprise-xx_XX.po -o languages/twoo-performant-uprise-xx_XX.mo
+```
+
+The feed CSV column headers are a fixed data contract with 2Performant and are intentionally left untranslated.
+
 ## License
 
 GPLv3 or later. See [LICENSE](LICENSE).
