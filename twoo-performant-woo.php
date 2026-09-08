@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:   2Performant / Business League for WooCommerce
  * Description:   Full integration with 2Performant /Business League for WooCommerce, supports 3rd party tracking (iframe), 1st party tracking (big bear), basic feed generation and hiding elements for network generated traffic!
- * Version:       2026.9.8
+ * Version:       2026.9.9
  * Author:        Eduard V. Doloc
  * Author URI:    https://rwky.ro
  * Text Domain:   twoo-performant-uprise
