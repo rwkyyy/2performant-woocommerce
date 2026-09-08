@@ -7,6 +7,8 @@ traffic so your store reports accurate sales and stays out of the search index w
 It supports both tracking methods 2Performant offers — the legacy sale-check iframe and the newer first-party
 "Big Bear" attribution — and works with WooCommerce High-Performance Order Storage (HPOS).
 
+**Website and documentation (Romanian):** https://rwkyyy.github.io/2performant-woocommerce/
+
 ## Requirements
 
 - WordPress with WooCommerce 4.2 or newer (tested up to WooCommerce 11.1)

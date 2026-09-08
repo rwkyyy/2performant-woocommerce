@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#124A3B"/>
-  <rect x="0" y="0" width="1200" height="8" fill="#E0851F"/>
+  <rect width="1200" height="630" fill="#131727"/>
+  <rect x="0" y="0" width="1200" height="8" fill="#C41E2E"/>
   <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
-    <text x="80" y="150" fill="#BCD1C8" font-size="30" font-weight="700" letter-spacing="3">PLUGIN WORDPRESS · GPLv3 · GRATUIT</text>
-    <text x="78" y="270" fill="#F4F1E9" font-size="84" font-weight="800">2Performant &amp; Business League</text>
-    <text x="78" y="372" fill="#F4F1E9" font-size="84" font-weight="800">pentru <tspan fill="#E0851F">WooCommerce</tspan></text>
-    <text x="80" y="452" fill="#BCD1C8" font-size="34" font-weight="500">Tracking conversii · Feed de produse · Trafic de afiliat curățat</text>
+    <text x="80" y="150" fill="#AAB0C2" font-size="30" font-weight="700" letter-spacing="3">PLUGIN WORDPRESS · GPLv3 · GRATUIT</text>
+    <text x="78" y="270" fill="#F3F4F6" font-size="84" font-weight="800">2Performant &amp; Business League</text>
+    <text x="78" y="372" fill="#F3F4F6" font-size="84" font-weight="800">pentru <tspan fill="#C41E2E">WooCommerce</tspan></text>
+    <text x="80" y="452" fill="#AAB0C2" font-size="34" font-weight="500">Tracking conversii · Feed de produse · Trafic de afiliat curățat</text>
   </g>
   <g transform="translate(80,520)">
-    <rect x="0" y="0" width="150" height="60" rx="12" fill="#E0851F"/>
-    <text x="75" y="39" fill="#1E1305" font-size="26" font-weight="700" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">2P</text>
-    <text x="176" y="30" fill="#F4F1E9" font-size="26" font-weight="700" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">fostul 2Parale</text>
-    <text x="176" y="62" fill="#BCD1C8" font-size="24" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">rețea de marketing afiliat din România</text>
+    <rect x="0" y="0" width="150" height="60" rx="12" fill="#C41E2E"/>
+    <text x="75" y="39" fill="#FFFFFF" font-size="26" font-weight="700" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">2P</text>
+    <text x="176" y="30" fill="#F3F4F6" font-size="26" font-weight="700" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">2Performant <tspan fill="#B79CFF">· Business League</tspan></text>
+    <text x="176" y="62" fill="#AAB0C2" font-size="24" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">rețea de marketing afiliat, fostul 2Parale</text>
   </g>
 </svg>
