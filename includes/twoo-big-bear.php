@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Debugger
 if ( ! defined( 'TWOO_BIG_BEAR_DEBUG' ) ) {
 	define( 'TWOO_BIG_BEAR_DEBUG', false );
 }
@@ -14,19 +13,15 @@ function twoo_get_net_item_unit_value( WC_Order_Item_Product $item, WC_Order $or
 	$quantity = max( 1, (int) $item->get_quantity() );
 
 	if ( wc_prices_include_tax() ) {
-
-		// Store prices include VAT → remove VAT
 		$subtotal = (float) $item->get_subtotal();
 		$tax      = (float) $item->get_subtotal_tax();
 
 		$line_total_ex_vat = $subtotal - $tax;
-
 	} else {
-
-		// Store prices already exclude VAT
 		$line_total_ex_vat = (float) $item->get_total();
-
 	}
+
+	$line_total_ex_vat = twoo_strip_vat_override( $line_total_ex_vat );
 
 	$unit_value = $line_total_ex_vat / $quantity;
 
@@ -138,7 +133,6 @@ function twoo_render_tp_order_script( $order_id ) {
 
 		$brand = get_bloginfo( 'name' );
 
-		//native WC brand
 		$brand_terms = get_the_terms( $product->get_id(), 'product_brand' );
 		if ( ! empty( $brand_terms ) && ! is_wp_error( $brand_terms ) ) {
 			$brand = reset( $brand_terms )->name;

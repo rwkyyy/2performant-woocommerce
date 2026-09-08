@@ -14,16 +14,17 @@ function twoo_get_iframe_sale_value( WC_Order $order ) {
 
 		$quantity = max( 1, (int) $item->get_quantity() );
 
-		// Primary value: WooCommerce line total excluding tax and including coupon distribution.
+		// get_total() is net of tax and includes coupon distribution.
 		$line_total_ex_tax = (float) $item->get_total();
 
-		// Defensive fallback for unusual WooCommerce configurations.
 		if ( $line_total_ex_tax <= 0 ) {
 			$subtotal_ex_tax = (float) $item->get_subtotal() - (float) $item->get_subtotal_tax();
 			if ( $subtotal_ex_tax > 0 ) {
 				$line_total_ex_tax = $subtotal_ex_tax;
 			}
 		}
+
+		$line_total_ex_tax = twoo_strip_vat_override( $line_total_ex_tax );
 
 		$unit_value = round( (float) ( $line_total_ex_tax / $quantity ), 2 );
 		$amount     += $unit_value * $quantity;

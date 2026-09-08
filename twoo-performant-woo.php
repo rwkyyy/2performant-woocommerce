@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:   2Performant / Business League for WooCommerce
  * Description:   Full integration with 2Performant /Business League for WooCommerce, supports 3rd party tracking (iframe), 1st party tracking (big bear), basic feed generation and hiding elements for network generated traffic!
- * Version:       2026.3.16
+ * Version:       2026.9.8
  * Author:        Eduard V. Doloc
  * Author URI:    https://rwky.ro
  * Text Domain:   twoo-performant-uprise
@@ -25,6 +25,7 @@ if (!defined('ABSPATH')) {
 }
 
 
+include_once 'includes/twoo-vat.php';
 include_once 'includes/twoo-iframe.php';
 include_once 'includes/twoo-big-bear.php';
 include_once 'includes/twoo-feed.php';
@@ -85,6 +86,77 @@ function get_twoo_performant_uprise_settings()
 		'section_end' => array(
 			'type' => 'sectionend',
 			'id' => 'twoo_section_end',
+		),
+
+		'feed_filter_title' => array(
+			'name' => __('Feed Product Filtering', 'twoo-performant-uprise'),
+			'type' => 'title',
+			'desc' => __('Restrict which products appear in the feed. Leave this disabled (or every list empty) to include all published products. When enabled, a product is included if it matches ANY selected category, brand, or tag.', 'twoo-performant-uprise'),
+			'id' => 'twoo_feed_filter_title',
+		),
+		'feed_filter_enabled' => array(
+			'name' => __('Enable feed filtering', 'twoo-performant-uprise'),
+			'type' => 'checkbox',
+			'desc' => __('When unchecked, the feed includes every published product (default behaviour).', 'twoo-performant-uprise'),
+			'id' => 'twoo_feed_filter_enabled',
+			'default' => 'no',
+		),
+		'feed_filter_categories' => array(
+			'name' => __('Include categories', 'twoo-performant-uprise'),
+			'type' => 'multiselect',
+			'class' => 'wc-enhanced-select',
+			'css' => 'min-width:350px;',
+			'options' => twoo_get_term_options('product_cat'),
+			'desc_tip' => __('Products in any selected category (and its sub-categories) are included.', 'twoo-performant-uprise'),
+			'id' => 'twoo_feed_filter_categories',
+			'default' => array(),
+		),
+		'feed_filter_brands' => array(
+			'name' => __('Include brands', 'twoo-performant-uprise'),
+			'type' => 'multiselect',
+			'class' => 'wc-enhanced-select',
+			'css' => 'min-width:350px;',
+			'options' => twoo_get_term_options('product_brand'),
+			'desc_tip' => __('Products assigned to any selected brand are included.', 'twoo-performant-uprise'),
+			'id' => 'twoo_feed_filter_brands',
+			'default' => array(),
+		),
+		'feed_filter_tags' => array(
+			'name' => __('Include tags', 'twoo-performant-uprise'),
+			'type' => 'multiselect',
+			'class' => 'wc-enhanced-select',
+			'css' => 'min-width:350px;',
+			'options' => twoo_get_term_options('product_tag'),
+			'desc_tip' => __('Products with any selected tag are included.', 'twoo-performant-uprise'),
+			'id' => 'twoo_feed_filter_tags',
+			'default' => array(),
+		),
+		'feed_filter_end' => array(
+			'type' => 'sectionend',
+			'id' => 'twoo_feed_filter_end',
+		),
+
+		'vat_title' => array(
+			'name' => __('VAT Override', 'twoo-performant-uprise'),
+			'type' => 'title',
+			'desc' => __('Only used when WooCommerce taxes are disabled. If your store runs without WooCommerce tax settings, prices still include VAT that WooCommerce cannot strip. Set your VAT rate here and it will be removed from the net sale values reported to 2Performant (iframe + Big Bear). Leave at 0 to disable. Automatically ignored whenever WooCommerce taxes are enabled.', 'twoo-performant-uprise'),
+			'id' => 'twoo_vat_title',
+		),
+		'vat_override_rate' => array(
+			'name' => __('VAT rate (%)', 'twoo-performant-uprise'),
+			'type' => 'number',
+			'desc' => __('For example 19 for 19%. Set to 0 to disable.', 'twoo-performant-uprise'),
+			'id' => 'twoo_vat_override_rate',
+			'default' => '0',
+			'custom_attributes' => array(
+				'min' => '0',
+				'max' => '100',
+				'step' => '0.01',
+			),
+		),
+		'vat_end' => array(
+			'type' => 'sectionend',
+			'id' => 'twoo_vat_end',
 		),
 	);
 

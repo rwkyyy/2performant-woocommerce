@@ -26,6 +26,93 @@ function twoo_trigger_csv_download() {
 }
 add_action( 'template_redirect', 'twoo_trigger_csv_download' );
 
+// Empty when the taxonomy is not registered (e.g. product_brand without WooCommerce Brands).
+function twoo_get_term_options( $taxonomy ) {
+	$options = array();
+
+	if ( ! taxonomy_exists( $taxonomy ) ) {
+		return $options;
+	}
+
+	$terms = get_terms(
+		array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+		)
+	);
+
+	if ( is_wp_error( $terms ) ) {
+		return $options;
+	}
+
+	foreach ( $terms as $term ) {
+		$options[ $term->term_id ] = $term->name;
+	}
+
+	return $options;
+}
+
+function twoo_feed_filter_enabled() {
+	return 'yes' === get_option( 'twoo_feed_filter_enabled' );
+}
+
+function twoo_get_feed_filter_terms( $option ) {
+	$value = get_option( $option, array() );
+
+	if ( ! is_array( $value ) ) {
+		$value = array();
+	}
+
+	return array_values( array_filter( array_map( 'absint', $value ) ) );
+}
+
+// Returns null for "no restriction" (all products), or an array of matching IDs
+// (possibly empty) using OR across the selected categories, brands and tags.
+function twoo_get_feed_filtered_product_ids() {
+	if ( ! twoo_feed_filter_enabled() ) {
+		return null;
+	}
+
+	$taxonomy_terms = array(
+		'product_cat'   => twoo_get_feed_filter_terms( 'twoo_feed_filter_categories' ),
+		'product_brand' => twoo_get_feed_filter_terms( 'twoo_feed_filter_brands' ),
+		'product_tag'   => twoo_get_feed_filter_terms( 'twoo_feed_filter_tags' ),
+	);
+
+	$tax_query = array( 'relation' => 'OR' );
+
+	foreach ( $taxonomy_terms as $taxonomy => $term_ids ) {
+		if ( empty( $term_ids ) ) {
+			continue;
+		}
+
+		$tax_query[] = array(
+			'taxonomy'         => $taxonomy,
+			'field'            => 'term_id',
+			'terms'            => $term_ids,
+			'include_children' => true,
+		);
+	}
+
+	// Only the relation key present means nothing was selected.
+	if ( 1 === count( $tax_query ) ) {
+		return null;
+	}
+
+	$ids = get_posts(
+		array(
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'tax_query'      => $tax_query,
+		)
+	);
+
+	return array_map( 'intval', $ids );
+}
+
 function twoo_generate_products_csv() {
 	$args = array(
 		'status' => 'publish',
@@ -33,7 +120,18 @@ function twoo_generate_products_csv() {
 		'return' => 'objects',
 	);
 
-	$products = wc_get_products( $args );
+	$filtered_ids = twoo_get_feed_filtered_product_ids();
+
+	if ( is_array( $filtered_ids ) ) {
+		if ( empty( $filtered_ids ) ) {
+			$products = array();
+		} else {
+			$args['include'] = $filtered_ids;
+			$products        = wc_get_products( $args );
+		}
+	} else {
+		$products = wc_get_products( $args );
+	}
 
 	header( 'Content-Type: text/csv; charset=utf-8' );
 	header( 'Content-Disposition: attachment; filename=products.csv' );
@@ -111,12 +209,8 @@ function twoo_generate_products_csv() {
 	fclose( $output );
 }
 
-/**
- * Build the full "Parent > Child > …" category path for a product.
- *
- * Picks the deepest assigned product_cat term so the tree is as complete as
- * possible, then walks its ancestors top-down.
- */
+// Picks the deepest assigned category, then walks its ancestors into a
+// "Parent > Child > …" path so the tree is as complete as possible.
 function twoo_build_category_tree( $product_id ) {
 	$categories = get_the_terms( $product_id, 'product_cat' );
 	if ( empty( $categories ) || is_wp_error( $categories ) ) {
@@ -150,9 +244,6 @@ function twoo_build_category_tree( $product_id ) {
 	return implode( ' > ', $names );
 }
 
-/**
- * Truncate a string to a max length, multibyte-safe when mbstring is available.
- */
 function twoo_truncate( $text, $length ) {
 	if ( function_exists( 'mb_substr' ) ) {
 		return mb_substr( $text, 0, $length );
